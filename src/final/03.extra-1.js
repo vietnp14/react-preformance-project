@@ -14,6 +14,7 @@ function Menu({
   highlightedIndex,
   selectedItem,
 }) {
+  console.log('Menu ne`')
   return (
     <ul {...getMenuProps()}>
       {items.map((item, index) => (
@@ -43,6 +44,7 @@ function ListItem({
 }) {
   const isSelected = selectedItem?.id === item.id
   const isHighlighted = highlightedIndex === index
+  console.log('List Item ne`')
   return (
     <li
       {...getItemProps({

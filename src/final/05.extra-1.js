@@ -20,9 +20,6 @@ const initialGrid = Array.from({length: 100}, () =>
 
 function appReducer(state, action) {
   switch (action.type) {
-    case 'TYPED_IN_DOG_INPUT': {
-      return {...state, dogName: action.dogName}
-    }
     case 'UPDATE_GRID_CELL': {
       return {...state, grid: updateGridCellState(state.grid, action)}
     }
@@ -37,7 +34,6 @@ function appReducer(state, action) {
 
 function AppProvider({children}) {
   const [state, dispatch] = React.useReducer(appReducer, {
-    dogName: '',
     grid: initialGrid,
   })
   return (

@@ -33,13 +33,22 @@ function appReducer(state, action) {
   }
 }
 
+const useAppStateDispatch = () => {
+  const [, dispatch] = React.useContext(AppStateContext);
+  if (!dispatch) {
+    throw new Error('useAppState must be used within the AppProvider')
+  }
+  const dispatchCallback = React.useCallback(dispatch, [dispatch]);
+  return dispatchCallback;
+}
+
 function AppProvider({children}) {
   const [state, dispatch] = React.useReducer(appReducer, {
     dogName: '',
     grid: initialGrid,
   })
-  // 🐨 memoize this value with React.useMemo
-  const value = [state, dispatch]
+  const value = React.useMemo(() => [state, dispatch], [state])
+
   return (
     <AppStateContext.Provider value={value}>
       {children}
@@ -56,7 +65,7 @@ function useAppState() {
 }
 
 function Grid() {
-  const [, dispatch] = useAppState()
+  const dispatch = useAppStateDispatch()
   const [rows, setRows] = useDebouncedState(50)
   const [columns, setColumns] = useDebouncedState(50)
   const updateGridData = () => dispatch({type: 'UPDATE_GRID'})

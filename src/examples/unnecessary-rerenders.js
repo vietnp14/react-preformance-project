@@ -1,10 +1,13 @@
 // http://localhost:3000/isolated/examples/unnecessary-rerenders.js
 
 import * as React from 'react'
+let i = 0;
 
-function CountButton({count, onClick}) {
-  return <button onClick={onClick}>{count}</button>
+function CountButton({onClick}) {
+  console.log('On Click')
+  return <button onClick={onClick}>Click</button>
 }
+CountButton = React.memo(CountButton);
 
 function NameInput({name, onNameChange}) {
   return (
@@ -17,11 +20,12 @@ function NameInput({name, onNameChange}) {
 function Example() {
   const [name, setName] = React.useState('')
   const [count, setCount] = React.useState(0)
-  const increment = () => setCount(c => c + 1)
+  const increment = React.useCallback(() => setCount(c => c + 1), []);
+
   return (
     <div>
       <div>
-        <CountButton count={count} onClick={increment} />
+        <CountButton onClick={increment} />
       </div>
       <div>
         <NameInput name={name} onNameChange={setName} />
